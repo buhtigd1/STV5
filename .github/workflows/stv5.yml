@@ -24,7 +24,7 @@ jobs:
           pip install requests
 
       - name: Run scraper
-        run: python scraper.py   # your script with requests logic
+        run: python provider.py   # your script with requests logic
 
       - name: Commit updated playlist
         run: |
