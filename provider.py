@@ -27,8 +27,12 @@ def download(url):
         return ""
 
 def clean_line(line: str) -> str:
-    # Remove group-title attribute if present
-    return re.sub(r'\s*group-title="[^"]+"', '', line, flags=re.IGNORECASE)
+    # Remove group-title attribute
+    line = re.sub(r'\s*group-title="[^"]+"', '', line, flags=re.IGNORECASE)
+    # Remove decorative separator lines (lots of '=' and text in between)
+    if re.match(r'^\s*=+\s*.*\s*=+\s*$', line):
+        return ""  # drop the line entirely
+    return line
 
 def main():
     logging.info("=== Scraper run started ===")
@@ -40,9 +44,10 @@ def main():
 
     cleaned_lines = []
     for line in source.splitlines():
-        if line.startswith("#EXTINF"):
+        if line.startswith("#EXTINF") or re.match(r'^\s*=+', line):
             line = clean_line(line)
-        cleaned_lines.append(line)
+        if line.strip():  # skip empty lines after cleaning
+            cleaned_lines.append(line)
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("\n".join(cleaned_lines))
