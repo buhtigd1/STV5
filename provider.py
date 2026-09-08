@@ -42,35 +42,17 @@ def main():
         logging.warning("No content downloaded, exiting.")
         return
 
-    lines = source.splitlines()
-    cleaned_lines = ["#EXTM3U"]  # always start with header
-
-    i = 0
-    while i < len(lines):
-        line = lines[i].strip()
-        if line.startswith("#EXTINF"):
-            # Clean the EXTINF line
-            extinf = clean_line(line)
-            # Look ahead for the next non-comment line (the URL)
-            url = ""
-            j = i + 1
-            while j < len(lines):
-                next_line = lines[j].strip()
-                if not next_line.startswith("#"):
-                    url = next_line
-                    break
-                j += 1
-            if extinf and url:
-                cleaned_lines.append(extinf)
-                cleaned_lines.append(url)
-            i = j + 1
-        else:
-            i += 1
+    cleaned_lines = []
+    for line in source.splitlines():
+        if line.startswith("#EXTINF") or re.match(r'^\s*=+', line):
+            line = clean_line(line)
+        if line.strip():  # skip empty lines after cleaning
+            cleaned_lines.append(line)
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("\n".join(cleaned_lines))
 
-    logging.info(f"Playlist saved to {OUTPUT_FILE} with {len(cleaned_lines)-1} channels")
+    logging.info(f"Playlist saved to {OUTPUT_FILE}")
     logging.info("=== Scraper run finished ===")
 
 if __name__ == "__main__":
