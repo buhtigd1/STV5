@@ -1,5 +1,6 @@
 import requests
 import logging
+import re
 from datetime import datetime
 
 SOURCE_URL = "https://raw.githubusercontent.com/sportlive18/jio-tv-auto-update-playlist/main/Sport.m3u"
@@ -25,6 +26,10 @@ def download(url):
         logging.error(f"Download failed: {e}")
         return ""
 
+def clean_line(line: str) -> str:
+    # Remove group-title attribute if present
+    return re.sub(r'\s*group-title="[^"]+"', '', line, flags=re.IGNORECASE)
+
 def main():
     logging.info("=== Scraper run started ===")
     source = download(SOURCE_URL)
@@ -33,8 +38,15 @@ def main():
         logging.warning("No content downloaded, exiting.")
         return
 
+    cleaned_lines = []
+    for line in source.splitlines():
+        if line.startswith("#EXTINF"):
+            line = clean_line(line)
+        cleaned_lines.append(line)
+
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        f.write(source)
+        f.write("\n".join(cleaned_lines))
+
     logging.info(f"Playlist saved to {OUTPUT_FILE}")
     logging.info("=== Scraper run finished ===")
 
