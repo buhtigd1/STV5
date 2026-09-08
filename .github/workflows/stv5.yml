@@ -24,12 +24,12 @@ jobs:
           pip install requests
 
       - name: Run scraper
-        run: python provider.py   # your script with requests logic
+        run: python provider.py
 
-      - name: Commit updated playlist
+      - name: Commit updated files
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add stv5.m3u
+          git add stv5.m3u stv5.log
           git commit -m "Update $(date -u +'%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
           git push
