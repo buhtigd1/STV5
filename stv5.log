@@ -986,3 +986,7 @@
 2026-11-04 11:44:13 [INFO] Starting download: https://raw.githubusercontent.com/sportlive18/jio-tv-auto-update-playlist/main/Sport.m3u
 2026-11-04 11:44:13 [ERROR] Download failed: 404 Client Error: Not Found for url: https://raw.githubusercontent.com/sportlive18/jio-tv-auto-update-playlist/main/Sport.m3u
 2026-11-04 11:44:13 [WARNING] No content downloaded, exiting.
+2026-11-04 19:03:38 [INFO] === Scraper run started ===
+2026-11-04 19:03:38 [INFO] Starting download: https://raw.githubusercontent.com/sportlive18/jio-tv-auto-update-playlist/main/Sport.m3u
+2026-11-04 19:03:38 [ERROR] Download failed: 404 Client Error: Not Found for url: https://raw.githubusercontent.com/sportlive18/jio-tv-auto-update-playlist/main/Sport.m3u
+2026-11-04 19:03:38 [WARNING] No content downloaded, exiting.
